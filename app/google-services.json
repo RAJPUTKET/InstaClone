@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "75975645684",
+    "project_id": "sanketr-8e261",
+    "storage_bucket": "sanketr-8e261.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75975645684:android:d797cb21ff65f4320b01a1",
+        "android_client_info": {
+          "package_name": "com.example.sanketr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75975645684-3cu92k0b918tail68j2pankccrs5m0h2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDuLBVvsABXr-h4u5fwSwXfc3Ni7saeu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75975645684-3cu92k0b918tail68j2pankccrs5m0h2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
