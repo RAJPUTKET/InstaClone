@@ -1,43 +1,77 @@
 package com.example.sanketr;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+import android.view.MenuItem;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.HashMap;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.rishav.firebasedemo.Fragments.HomeFragment;
+import com.rishav.firebasedemo.Fragments.NotificationFragment;
+import com.rishav.firebasedemo.Fragments.ProfileFragment;
+import com.rishav.firebasedemo.Fragments.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-private Button logout;
+    private BottomNavigationView bottomNavigationView;
+    private Fragment selectorFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        logout= findViewById(R.id.button);
-        logout.setOnClickListener(new View.OnClickListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-                Toast.makeText(MainActivity.this, "Logged Out!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, StartActivity.class));
+                switch (menuItem.getItemId()){
+                    case R.id.nav_home :
+                        selectorFragment = new HomeFragment();
+                        break;
+
+                    case R.id.nav_search :
+                        selectorFragment = new SearchFragment();
+                        break;
+
+                    case R.id.nav_add :
+                        selectorFragment = null;
+                        startActivity(new Intent(MainActivity.this , PostActivity.class));
+                        break;
+
+                    case R.id.nav_heart :
+                        selectorFragment = new NotificationFragment();
+                        break;
+
+                    case R.id.nav_profile :
+                        selectorFragment = new ProfileFragment();
+                        break;
+                }
+
+                if (selectorFragment != null){
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container , selectorFragment).commit();
+                }
+
+                return  true;
 
             }
         });
-        HashMap<String , Object> map =new HashMap<>();
-        map.put("Name", "Sanket");
-        map.put("Email", "sanketr.co@gmail.com");
 
-        FirebaseDatabase.getInstance().getReference().child("Mail & passwords").child("1").updateChildren(map);
+        Bundle intent = getIntent().getExtras();
+        if (intent != null) {
+            String profileId = intent.getString("publisherId");
+
+            getSharedPreferences("PROFILE", MODE_PRIVATE).edit().putString("profileId", profileId).apply();
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+            bottomNavigationView.setSelectedItemId(R.id.nav_profile);
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container , new HomeFragment()).commit();
+        }
     }
 }
